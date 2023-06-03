@@ -67,6 +67,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     private boolean finDelJuego = false;
+    private int contadorNivel = 1;
 
 
 
@@ -94,16 +95,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         altoPantalla= screenHeight;
         joystickX = 200;
         joystickY = altoPantalla - 200;
+    }
 
-        for (int i = 0; i < 200; i++) {
-            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+    private void generarNivel (){
+
+        int cantZombies = this.contadorNivel * 10;
+        int velZombie = this.contadorNivel +1;
+        int cantBloques = 10 / this.contadorNivel;
+
+        for (int i = 0; i < cantZombies; i++) {
+            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, velZombie);
             zombies.add(z);
         }
 
-        for (int i = 0; i < 5; i++) {
+        bloques.clear();
+        for (int i = 0; i < cantBloques; i++) {
             Bloque b = new Bloque(anchoPantalla,altoPantalla, 75);
             bloques.add(b);
         }
+
+        this.contadorNivel = this.contadorNivel + 1;
     }
 
     public GameView(Context context, AttributeSet attrs) {
@@ -120,6 +131,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     updateBullets();
                     updateZombies();
                     draw();
+                    if (zombies.size()<1){
+                        generarNivel();
+                    }
                 }
             }
         });

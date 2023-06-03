@@ -55,24 +55,16 @@ public class MainActivity extends AppCompatActivity {
     private GameView gameView;
     public static double screenWidth;
     private FloatingActionButton botonDisparar, botonBuscar;
-
     private static final String TAG = "MainActivity";
-
     private ConnectionsClient connectionsClient;
     private MyEndpointDiscoveryCallback endpointDiscoveryCallback;
     private MyConnectionLifecycleCallback connectionLifecycleCallback;
     private static final int PERMISSION_REQUEST_CODE = 123;
     String selectedEndpointId;
-
     private boolean servidor = false;
-
     private boolean finJuego = false;
-
     private Timer gameTimer;
     private boolean isToastShown = false;
-
-
-
 
 
     @Override
@@ -125,13 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
         requestPermissionsIfNeeded();
 
-
         setContentView(R.layout.activity_main);
+
         // Crear una instancia del lienzo personalizado
-
-
         gameView = new GameView(this);
-
 
         // Crear una instancia de tu ConnectionLifecycleCallback
         connectionLifecycleCallback = new MyConnectionLifecycleCallback();
@@ -142,11 +131,7 @@ public class MainActivity extends AppCompatActivity {
         // Obtener una instancia de ConnectionsClient
         connectionsClient = Nearby.getConnectionsClient(this);
 
-
-
-
         endpointDiscoveryCallback.setContexto(getApplicationContext());
-
 
         // Agregar el lienzo personalizado al layout de la actividad principal
         LinearLayout layout = findViewById(R.id.game_layout);
@@ -161,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
                 List<String> deviceNames = endpointDiscoveryCallback.getListaNombres();
                 HashMap<String, DiscoveredEndpointInfo> deviceList = endpointDiscoveryCallback.getListaDevices();
-
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 if (deviceNames == null || deviceNames.isEmpty()) {
@@ -182,11 +166,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (connectionLifecycleCallback.isConexionEstablecida() && (connectionLifecycleCallback.getEndpointConectado()!= null)){
-
                     byte[] playerData = gameView.getPlayerData();
                     sendGameData(connectionLifecycleCallback.getEndpointConectado(), playerData, gameView.getBalasByte(), gameView.getZobiesByte());
                 }
-
 
             }
         });
@@ -198,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                 gameView.agregarBala(nuevaBala);
             }
         });
-
 
 
         // Actualizar el lienzo personalizado cada 16ms (60fps)
