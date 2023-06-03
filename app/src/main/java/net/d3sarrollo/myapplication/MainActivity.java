@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean finJuego = false;
 
+    private Timer gameTimer;
+    private boolean isToastShown = false;
+
+
 
 
 
@@ -198,44 +202,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Actualizar el lienzo personalizado cada 16ms (60fps)
-        new Timer().schedule(new TimerTask() {
+        gameTimer = new Timer();
+        gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(() -> {
-                    if (gameView.isFinDelJuego()){
-                        cancel();
-                        finJuego = true;
+                    if (gameView.isFinDelJuego() && !isToastShown) {
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Fin del Juego", Toast.LENGTH_LONG).show();
+                        isToastShown = true;
+                        gameTimer.cancel();
                     }
                     gameView.invalidate();
                 });
             }
         }, 0, 16);
-
-        if (finJuego){
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-
-            builder.setTitle("Fin del juego")
-                .setMessage("¿Deseas volver a jugar?")
-                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finJuego = false;
-                        recreate();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setCancelable(false)
-                .show();
-
-        }
-
-
     }
 
     private void sendGameData(String endpointId, byte[] playerData, byte[] balasArray, byte[] zombiesArray) {
@@ -278,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
         connectionsClient.stopDiscovery();
         if (servidor){
             connectionsClient.stopAdvertising();
-
         }
     }
 
