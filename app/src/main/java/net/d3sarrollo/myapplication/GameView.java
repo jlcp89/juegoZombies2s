@@ -40,6 +40,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private List<Zombie> zombies;
 
     private List<Bloque> bloques;
+    private List<Nivel> niveles;
+
 
 
     int prevX, prevY;
@@ -67,7 +69,63 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     private boolean finDelJuego = false;
-    private int contadorNivel = 1;
+    private int contadorNivel = 0;
+
+    private int initialCoorX;
+    private int initialCoorY;
+
+    private void generarNiveles(){
+        niveles = new ArrayList<>();
+        Nivel nivelN = new Nivel( 10,2,10);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 20,2,10);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 30,2,10);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 40,3,8);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 50,3,7);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 60,3,6);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 70,4,5);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 80,4,4);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 90,4,3);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 100,5,2);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 150,6,1);
+        niveles.add(nivelN);
+        //nivel 12
+        nivelN = new Nivel( 200,7,0);
+        niveles.add(nivelN);
+    }
+
+    private void generarNivel (){
+
+        if (contadorNivel <= niveles.size()){
+            Nivel n = niveles.get(contadorNivel);
+
+            int cantZombies = n.getCantidadZombies();
+            int velZombie = n.getVelocidadZombies();
+            int cantBloques = n.getCantidadBloques();
+
+            for (int i = 0; i < cantZombies; i++) {
+                Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, velZombie);
+                zombies.add(z);
+            }
+
+            bloques.clear();
+            for (int i = 0; i < cantBloques; i++) {
+                Bloque b = new Bloque(anchoPantalla,altoPantalla, 60, player1.getCoorX(), player1.getCoorY());
+                bloques.add(b);
+            }
+
+            this.contadorNivel = this.contadorNivel + 1;
+        }
+    }
 
 
 
@@ -76,7 +134,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     public GameView(Context context) {
         super(context);
         paint = new Paint();
-
+        generarNiveles();
 
         setOnTouchListener(this);
         getHolder().addCallback(this);
@@ -91,31 +149,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         zombies = new ArrayList<>();
         bloques = new ArrayList<>();
 
+        initialCoorX = player1.getCoorX();
+        initialCoorY = player1.getCoorY();
+
         anchoPantalla = screenWidth;
         altoPantalla= screenHeight;
         joystickX = 200;
         joystickY = altoPantalla - 200;
     }
 
-    private void generarNivel (){
 
-        int cantZombies = this.contadorNivel * 10;
-        int velZombie = this.contadorNivel +1;
-        int cantBloques = 10 / this.contadorNivel;
-
-        for (int i = 0; i < cantZombies; i++) {
-            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, velZombie);
-            zombies.add(z);
-        }
-
-        bloques.clear();
-        for (int i = 0; i < cantBloques; i++) {
-            Bloque b = new Bloque(anchoPantalla,altoPantalla, 75);
-            bloques.add(b);
-        }
-
-        this.contadorNivel = this.contadorNivel + 1;
-    }
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -202,18 +245,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     int y1 = player1.getCoorY() - player1.getSize()/2;
                     int x2 = player1.getCoorX() + player1.getSize()/2;
                     int y2 = player1.getCoorY() + player1.getSize()/2;
-
                     canvas.drawRect(x1,y1,x2,y2, paint);
 
-
-
-                    //Dibujar bloques
-                    if (bloques.size()>0){
+                    // Dibujar bloques
+                    if (bloques.size() > 0) {
                         paint.setColor(Color.DKGRAY);
                         for (int i = 0; i < bloques.size(); i++) {
                             Bloque b = bloques.get(i);
-                            // Realiza las operaciones necesarias con la bala en la posición i
-                            canvas.drawCircle(b.getX(),b.getY(),b.getRadio(), paint);
+                            // Realiza las operaciones necesarias con el bloque en la posición i
+                            float left = b.getX() - b.getRadio(); // Coordenada x de la esquina superior izquierda del cuadrado
+                            float top = b.getY() - b.getRadio(); // Coordenada y de la esquina superior izquierda del cuadrado
+                            float right = b.getX() + b.getRadio(); // Coordenada x de la esquina inferior derecha del cuadrado
+                            float bottom = b.getY() + b.getRadio(); // Coordenada y de la esquina inferior derecha del cuadrado
+                            canvas.drawRect(left, top, right, bottom, paint);
                         }
                     }
 
@@ -364,11 +408,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         int difY = 0;
         int pointerCount = event.getPointerCount();
 
-
-        if (touchX < anchoPantalla/2){
+        if (touchX < anchoPantalla){
             //Manejar eventos de toque de pantalla
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    initialCoorX = player1.getCoorX();
+                    initialCoorY = player1.getCoorY();
+
                     prevX = touchX;
                     prevY = touchY;
                     //Calcular distancia del toque desde el centro del joystick
@@ -377,6 +423,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     difY = prevY - joystickY;
                     float displacement = (float) Math.sqrt(Math.pow(difX, 2) + Math.pow(difY, 2));
                     joystickAngle = (float) Math.atan2(difY, difX); // Cálculo del ángulo en radianes
+
+
 
 
                     if (displacement < sizeJoystick){
@@ -409,24 +457,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                             }
                         }
                     }
+
                     break;
 
                 // Acciones segun accion de toque de pantalla
-
-                case MotionEvent.ACTION_POINTER_DOWN:
-                    if (pointerCount == 2) {
-                        Bala nuevaBala = new Bala(this.regresarCoordenadasJugador1()[0],this.regresarCoordenadasJugador1()[1], this.regresarDireccionJugador1()); // Coordenadas de la bala
-                        this.agregarBala(nuevaBala);
-                    }
-                    break;
-
 
                 case MotionEvent.ACTION_MOVE:
                     difX = touchX - prevX;
                     difY = touchY - prevY;
 
-                    float nuevoCoorX = player1.getCoorX() + difX;
-                    float nuevoCoorY = player1.getCoorY() + difY;
+                    float anguloMovimiento = (float) Math.atan2(difY, difX); // Cálculo del ángulo en radianes
+                    int velocidadJugador = 5;
+
+
+                    float nuevoCoorX = (float) (player1.getCoorX() + (velocidadJugador*Math.cos(anguloMovimiento)));
+                    float nuevoCoorY = (float) (player1.getCoorY() + (velocidadJugador*Math.sin(anguloMovimiento)));
 
                     // Verificar colisión con bloques circulares
                     boolean colisionBloque = false;
