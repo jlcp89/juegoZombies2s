@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private int playerX, playerY, playerSize;
     private GameView gameView;
     public static double screenWidth;
-    private FloatingActionButton botonDisparar, botonBuscar;
+    private FloatingActionButton botonBuscar, botonDispararArriba, botonDispararAbajo, botonDispararIzquierda, botonDispararDerecha, botonDispararArribaI, botonDispararArribaD, botonDispararAbajoI, botonDispararAbajoD;
     private static final String TAG = "MainActivity";
     private ConnectionsClient connectionsClient;
     private MyEndpointDiscoveryCallback endpointDiscoveryCallback;
@@ -135,12 +135,20 @@ public class MainActivity extends AppCompatActivity {
 
         // Agregar el lienzo personalizado al layout de la actividad principal
         LinearLayout layout = findViewById(R.id.game_layout);
-        botonDisparar = findViewById(R.id.botonDisparar);
-        botonBuscar = findViewById(R.id.botonBuscar);
+        botonDispararArriba = findViewById(R.id.btn_up);
+        botonDispararAbajo = findViewById(R.id.btn_down);
+        botonDispararDerecha = findViewById(R.id.btn_right);
+        botonDispararIzquierda = findViewById(R.id.btn_left);
+        botonDispararArribaI = findViewById(R.id.btn_ari);
+        botonDispararArribaD = findViewById(R.id.btn_ard);
+        botonDispararAbajoI = findViewById(R.id.btn_abi);
+        botonDispararAbajoD = findViewById(R.id.btn_abd);
+
+        //botonBuscar = findViewById(R.id.botonBuscar);
 
         layout.addView(gameView);
 
-        botonBuscar.setOnClickListener(new View.OnClickListener() {
+        /*botonBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -171,12 +179,68 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
-        botonDisparar.setOnClickListener(new View.OnClickListener() {
+        botonDispararArriba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], gameView.regresarDireccionJugador1()); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararAbajo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararDerecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararIzquierda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararArribaI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararArribaD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararAbajoI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+            }
+        });
+
+        botonDispararAbajoD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_RIGHT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });

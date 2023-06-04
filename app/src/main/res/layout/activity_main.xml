@@ -15,32 +15,133 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/botonBuscar"
+    <!-- Botones para el joystick de ocho direcciones -->
+    <LinearLayout
+        android:id="@+id/joystick_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_east_24"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        app:backgroundTint="@color/black"
-        app:tint="@color/white"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/botonDisparar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
-        android:clickable="true"
-        app:backgroundTint="@color/black"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/white"
-        app:srcCompat="@drawable/baseline_file_upload_24"
-        app:tint="@color/white" />
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_ari"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/disparo_arriba_izquierda"
+                app:backgroundTint="@color/black"
+                app:tint="@color/white"
+                android:alpha="0.5"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:tint="@color/white"
+                app:srcCompat="@drawable/disparo_arriba"
+                android:alpha="0.5"
+                 />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_ard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/disparo_arriba_derecha"
+                app:backgroundTint="@color/black"
+                app:tint="@color/white"
+                android:alpha="0.5"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:srcCompat="@drawable/disparo_izquierda"
+                app:tint="@color/white"
+                android:alpha="0.5"
+                />
+            <LinearLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent"/>
+
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:srcCompat="@drawable/disparo_derecha"
+                app:tint="@color/white"
+                android:alpha="0.5"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_abi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/disparo_abajo_izquierda"
+                app:backgroundTint="@color/black"
+                app:tint="@color/white"
+                android:alpha="0.5"/>
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:srcCompat="@drawable/disparo_abajo"
+                app:tint="@color/white"
+                android:alpha="0.5"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_abd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/disparo_abajo_derecha"
+                app:backgroundTint="@color/black"
+                app:tint="@color/white"
+                android:alpha="0.5"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

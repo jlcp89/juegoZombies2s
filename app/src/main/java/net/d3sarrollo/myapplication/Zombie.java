@@ -9,7 +9,15 @@ public class Zombie {
     private int speed; // Velocidad de movimiento del zombie
 
     private double distanceToPlayer;
+    private String direccion;
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
     public Zombie(int ancho, int alto, int tamano, int vel) {
         // Inicializar los atributos del zombie con valores aleatorios

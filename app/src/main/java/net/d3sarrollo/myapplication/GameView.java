@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -214,7 +215,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     paint.setColor(Color.WHITE);
                     canvas.drawPaint(paint);
 
-                    //Dibujar control
+                    /*//Dibujar control
                     paint.setColor(Color.BLACK);
                     canvas.drawCircle(joystickX,joystickY,sizeJoystick, paint);
                     //Dibujar control
@@ -236,16 +237,54 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                         float endX = joystickX + (float) ((CIRCLE_RADIUS + LINE_LENGTH) * Math.cos(angle));
                         float endY = joystickY + (float) ((CIRCLE_RADIUS + LINE_LENGTH) * Math.sin(angle));
                         canvas.drawLine(startX, startY, endX, endY, paint);
-                    }
+                    }*/
 
 
                     //Dibujar jugador
-                    paint.setColor(Color.BLUE);
-                    int x1 = player1.getCoorX() - player1.getSize()/2;
-                    int y1 = player1.getCoorY() - player1.getSize()/2;
-                    int x2 = player1.getCoorX() + player1.getSize()/2;
-                    int y2 = player1.getCoorY() + player1.getSize()/2;
-                    canvas.drawRect(x1,y1,x2,y2, paint);
+                    // Obtener el drawable "soldado_arriba" desde los recursos
+                    Drawable soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_arriba);
+
+                    switch (directionJ1) {
+                        case "UP":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_arriba);
+                            break;
+                        case "DOWN":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_abajo);
+                            break;
+                        case "LEFT":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_izquierda);
+                            break;
+                        case "RIGHT":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_derecha);
+                            break;
+                        case "UP_LEFT":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_arriba_izquierda);
+                            break;
+                        case "UP_RIGHT":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_arriba_derecha);
+                            break;
+                        case "DOWN_LEFT":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_abajo_izquierda);
+                            break;
+                        case "DOWN_RIGHT":
+                            soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_abajo_derecha);
+                            break;
+                    }
+
+
+                    // Obtener las dimensiones del drawable
+                    int drawableWidth = soldadoArribaDrawable.getIntrinsicWidth();
+                    int drawableHeight = soldadoArribaDrawable.getIntrinsicHeight();
+
+                    // Calcular las coordenadas de dibujo
+                    int left = player1.getCoorX() - drawableWidth / 2;
+                    int top = player1.getCoorY() - drawableHeight / 2;
+                    int right = player1.getCoorX() + drawableWidth / 2;
+                    int bottom = player1.getCoorY() + drawableHeight / 2;
+
+                    // Dibujar el drawable en el lienzo
+                    soldadoArribaDrawable.setBounds(left, top, right, bottom);
+                    soldadoArribaDrawable.draw(canvas);
 
                     // Dibujar bloques
                     if (bloques.size() > 0) {
@@ -253,28 +292,62 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                         for (int i = 0; i < bloques.size(); i++) {
                             Bloque b = bloques.get(i);
                             // Realiza las operaciones necesarias con el bloque en la posición i
-                            float left = b.getX() - b.getRadio(); // Coordenada x de la esquina superior izquierda del cuadrado
-                            float top = b.getY() - b.getRadio(); // Coordenada y de la esquina superior izquierda del cuadrado
-                            float right = b.getX() + b.getRadio(); // Coordenada x de la esquina inferior derecha del cuadrado
-                            float bottom = b.getY() + b.getRadio(); // Coordenada y de la esquina inferior derecha del cuadrado
-                            canvas.drawRect(left, top, right, bottom, paint);
+                            float lefts = b.getX() - b.getRadio(); // Coordenada x de la esquina superior izquierda del cuadrado
+                            float tops = b.getY() - b.getRadio(); // Coordenada y de la esquina superior izquierda del cuadrado
+                            float rights = b.getX() + b.getRadio(); // Coordenada x de la esquina inferior derecha del cuadrado
+                            float bottoms = b.getY() + b.getRadio(); // Coordenada y de la esquina inferior derecha del cuadrado
+                            canvas.drawRect(lefts, tops, rights, bottoms, paint);
                         }
                     }
 
-                    //Dibujar zombies
-                    if (zombies.size()>0){
-                        paint.setColor(Color.RED);
-                        for (int i = 0; i < zombies.size(); i++) {
-                            Zombie z = zombies.get(i);
-                            // Realiza las operaciones necesarias con la bala en la posición i
-                            canvas.drawCircle(z.getX(),z.getY(),z.getSize(), paint);
+                    // Obtener el drawable "zombie_arriba" desde los recursos
+                    Drawable zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_arriba);
+
+                    for (int i = 0; i < zombies.size(); i++) {
+                        Zombie z = zombies.get(i);
+
+                        switch (z.getDireccion()) {
+                            case "UP":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_arriba);
+                                break;
+                            case "DOWN":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_abajo);
+                                break;
+                            case "LEFT":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_izquierda);
+                                break;
+                            case "RIGHT":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_derecha);
+                                break;
+                            case "UP_LEFT":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_arriba_izquierda);
+                                break;
+                            case "UP_RIGHT":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_arriba_derecha);
+                                break;
+                            case "DOWN_LEFT":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_abajo_izquierda);
+                                break;
+                            case "DOWN_RIGHT":
+                                zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_abajo_derecha);
+                                break;
                         }
+
+                        // Calcular las coordenadas de dibujo
+                        int leftz = z.getX() - zombieArribaDrawable.getIntrinsicWidth() / 2;
+                        int topz = z.getY() - zombieArribaDrawable.getIntrinsicHeight() / 2;
+                        int rightz = z.getX() + zombieArribaDrawable.getIntrinsicWidth() / 2;
+                        int bottomz = z.getY() + zombieArribaDrawable.getIntrinsicHeight() / 2;
+
+                        // Dibujar el drawable en el lienzo
+                        zombieArribaDrawable.setBounds(leftz, topz, rightz, bottomz);
+                        zombieArribaDrawable.draw(canvas);
                     }
 
 
                     //Dibujar balas
                     if (balas.size()>0){
-                        paint.setColor(Color.RED);
+                        paint.setColor(Color.MAGENTA);
                         for (int i = 0; i < balas.size(); i++) {
                             Bala bala = balas.get(i);
                             // Realiza las operaciones necesarias con la bala en la posición i
@@ -368,9 +441,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             }
 
 
-
-
-
             // Verificar colisiones con las balas
             for (int j = 0; j < balas.size(); j++) {
                 Bala bullet = balas.get(j);
@@ -388,6 +458,40 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     break;
                 }
             }
+
+             //Calcular distancia del toque desde el centro del joystick
+            int difX = deltaX + mX;
+            int difY = deltaY + mY;
+            String directionZ = "UP";
+
+            if (Math.abs(difX) > Math.abs(difY)) {
+                // Movimiento horizontal
+                if (difX > 0) {
+                    if (difY > 30) {
+                        directionZ = "DOWN_RIGHT";
+                    } else if (difY < -30) {
+                        directionZ = "UP_RIGHT";
+                    } else {
+                        directionZ = "RIGHT";
+                    }
+                } else {
+                    if (difY > 30) {
+                        directionZ = "DOWN_LEFT";
+                    } else if (difY < -30) {
+                        directionZ = "UP_LEFT";
+                    } else {
+                        directionZ = "LEFT";
+                    }
+                }
+            } else {
+                // Movimiento vertical
+                if (difY > 0) {
+                    directionZ = "DOWN";
+                } else {
+                    directionZ = "UP";
+                }
+            }
+            zombie.setDireccion(directionZ);
         }
     }
 
@@ -397,10 +501,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         return (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-
         //obtenjer el valor de las coordenadas del toque del usuario
         int touchX = (int) event.getX();
         int touchY = (int) event.getY();
@@ -414,65 +516,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                 case MotionEvent.ACTION_DOWN:
                     initialCoorX = player1.getCoorX();
                     initialCoorY = player1.getCoorY();
-
                     prevX = touchX;
                     prevY = touchY;
-                    //Calcular distancia del toque desde el centro del joystick
-
-                    difX = prevX - joystickX;
-                    difY = prevY - joystickY;
-                    float displacement = (float) Math.sqrt(Math.pow(difX, 2) + Math.pow(difY, 2));
-                    joystickAngle = (float) Math.atan2(difY, difX); // Cálculo del ángulo en radianes
-
-
-
-
-                    if (displacement < sizeJoystick){
-                        // Cambiar dirección sin moverse
-                        if (Math.abs(difX) > Math.abs(difY)) {
-                            // Movimiento horizontal
-                            if (difX > 0) {
-                                if (difY > 30) {
-                                    directionJ1 = "DOWN_RIGHT";
-                                } else if (difY < -30) {
-                                    directionJ1 = "UP_RIGHT";
-                                } else {
-                                    directionJ1 = "RIGHT";
-                                }
-                            } else {
-                                if (difY > 30) {
-                                    directionJ1 = "DOWN_LEFT";
-                                } else if (difY < -30) {
-                                    directionJ1 = "UP_LEFT";
-                                } else {
-                                    directionJ1 = "LEFT";
-                                }
-                            }
-                        } else {
-                            // Movimiento vertical
-                            if (difY > 0) {
-                                directionJ1 = "DOWN";
-                            } else {
-                                directionJ1 = "UP";
-                            }
-                        }
-                    }
-
                     break;
-
-                // Acciones segun accion de toque de pantalla
-
                 case MotionEvent.ACTION_MOVE:
                     difX = touchX - prevX;
                     difY = touchY - prevY;
-
                     float anguloMovimiento = (float) Math.atan2(difY, difX); // Cálculo del ángulo en radianes
                     int velocidadJugador = 5;
-
-
                     float nuevoCoorX = (float) (player1.getCoorX() + (velocidadJugador*Math.cos(anguloMovimiento)));
                     float nuevoCoorY = (float) (player1.getCoorY() + (velocidadJugador*Math.sin(anguloMovimiento)));
-
                     // Verificar colisión con bloques circulares
                     boolean colisionBloque = false;
                     for (Bloque bloque : bloques) {
@@ -484,31 +537,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                             break;
                         }
                     }
-
                     // Actualizar la posición del jugador solo si no hay colisión con bloques
                     if (!colisionBloque) {
                         player1.setCoorX((int) Math.max(0, Math.min(nuevoCoorX, anchoPantalla - player1.getSize())));
                         player1.setCoorY((int) Math.max(0, Math.min(nuevoCoorY, altoPantalla - player1.getSize())));
                     }
-
                     // Guardar la coordenada actual para la siguiente actualización de la posición del jugador
                     prevX = touchX;
                     prevY = touchY;
-
                     break;
-
-
                 case MotionEvent.ACTION_UP:
                     // Liberación del toque
                     break;
             }
         }
         return true; // Indicar que se ha procesado el evento de toque
-
     }
 
     protected void agregarBala (Bala b){
         this.balas.add(b);
+        this.directionJ1 = b.getDireccion();
     }
 
     protected void eliminarBala (Bala b){
@@ -542,11 +590,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         // Convierte el objeto JSON a un array de bytes
         return playerDataJson.toString().getBytes();
     }
-
-
-
 }
