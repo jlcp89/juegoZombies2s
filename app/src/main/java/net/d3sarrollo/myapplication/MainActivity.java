@@ -45,6 +45,7 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
 
 import android.Manifest;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean finJuego = false;
     private Timer gameTimer;
     private boolean isToastShown = false;
+    private TextView textoNivel, textoPuntos;
 
 
     @Override
@@ -143,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
         botonDispararArribaD = findViewById(R.id.btn_ard);
         botonDispararAbajoI = findViewById(R.id.btn_abi);
         botonDispararAbajoD = findViewById(R.id.btn_abd);
+        textoNivel = findViewById(R.id.textNivel);
+        textoPuntos = findViewById(R.id.textPuntos);
 
         //botonBuscar = findViewById(R.id.botonBuscar);
 
@@ -259,6 +263,10 @@ public class MainActivity extends AppCompatActivity {
                         gameTimer.cancel();
                     }
                     gameView.invalidate();
+                    String textoN = "Nivel: " + gameView.getNivelAcutal();
+                    textoNivel.setText(textoN);
+                    String textoP = "Puntos: " + gameView.getContadorZombiesEliminados();
+                    textoPuntos.setText(textoP);
                 });
             }
         }, 0, 16);

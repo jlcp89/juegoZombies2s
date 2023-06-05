@@ -74,14 +74,31 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private int initialCoorX;
     private int initialCoorY;
+    private int contadorZombiesEliminados = 0;
+
+    public int getContadorZombiesEliminados() {
+        return contadorZombiesEliminados;
+    }
+
+    public void setContadorZombiesEliminados(int contadorZombiesEliminados) {
+        this.contadorZombiesEliminados = contadorZombiesEliminados;
+    }
+
+    public int getNivelAcutal() {
+        return this.contadorNivel;
+    }
+
+
+
+
 
     private void generarNiveles(){
         niveles = new ArrayList<>();
-        Nivel nivelN = new Nivel( 10,2,10);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 20,2,10);
+        Nivel nivelN = new Nivel( 20,2,25);
         niveles.add(nivelN);
         nivelN = new Nivel( 30,2,10);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 40,2,10);
         niveles.add(nivelN);
         nivelN = new Nivel( 40,3,8);
         niveles.add(nivelN);
@@ -120,7 +137,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
             bloques.clear();
             for (int i = 0; i < cantBloques; i++) {
-                Bloque b = new Bloque(anchoPantalla,altoPantalla, 60, player1.getCoorX(), player1.getCoorY());
+                Bloque b = new Bloque(anchoPantalla,altoPantalla, 25, player1.getCoorX(), player1.getCoorY());
                 bloques.add(b);
             }
 
@@ -239,6 +256,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                         canvas.drawLine(startX, startY, endX, endY, paint);
                     }*/
 
+                    paint.setColor(Color.BLACK);
+                    int cellSize = 40; // Tamaño de la celda en píxeles
+
+                    int width = anchoPantalla;
+                    int height = altoPantalla;
+
+                    // Dibujar líneas verticales
+                    for (int x = 0; x <= width; x += cellSize) {
+                        canvas.drawLine(x, 0, x, height, paint);
+                    }
+
+                    // Dibujar líneas horizontales
+                    for (int y = 0; y <= height; y += cellSize) {
+                        canvas.drawLine(0, y, width, y, paint);
+                    }
+
 
                     //Dibujar jugador
                     // Obtener el drawable "soldado_arriba" desde los recursos
@@ -319,7 +352,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                             case "RIGHT":
                                 zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_derecha);
                                 break;
-                            case "UP_LEFT":
+                            /*case "UP_LEFT":
                                 zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_arriba_izquierda);
                                 break;
                             case "UP_RIGHT":
@@ -330,7 +363,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                                 break;
                             case "DOWN_RIGHT":
                                 zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_abajo_derecha);
-                                break;
+                                break;*/
                         }
 
                         // Calcular las coordenadas de dibujo
@@ -347,7 +380,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
                     //Dibujar balas
                     if (balas.size()>0){
-                        paint.setColor(Color.MAGENTA);
+                        paint.setColor(Color.BLUE);
                         for (int i = 0; i < balas.size(); i++) {
                             Bala bala = balas.get(i);
                             // Realiza las operaciones necesarias con la bala en la posición i
@@ -453,6 +486,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     // Decrementar los índices para evitar errores de índice fuera de rango
                     i--;
                     j--;
+                    contadorZombiesEliminados += 1;
 
                     // Salir del bucle interno para evitar verificar más colisiones con la misma bala
                     break;
@@ -523,7 +557,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     difX = touchX - prevX;
                     difY = touchY - prevY;
                     float anguloMovimiento = (float) Math.atan2(difY, difX); // Cálculo del ángulo en radianes
-                    int velocidadJugador = 5;
+                    int velocidadJugador = 8;
                     float nuevoCoorX = (float) (player1.getCoorX() + (velocidadJugador*Math.cos(anguloMovimiento)));
                     float nuevoCoorY = (float) (player1.getCoorY() + (velocidadJugador*Math.sin(anguloMovimiento)));
                     // Verificar colisión con bloques circulares
@@ -555,6 +589,39 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     protected void agregarBala (Bala b){
+
+        switch (b.getDireccion()) {
+            case "UP":
+                b.setX(b.getX()+8);
+                break;
+            case "DOWN":
+                b.setX(b.getX()-35);
+                break;
+            case "LEFT":
+                b.setY(b.getY()-20);
+                break;
+            case "RIGHT":
+                b.setY(b.getY()+15);
+                break;
+            case "UP_LEFT":
+                b.setY(b.getY()-8);
+                b.setX(b.getX());
+                break;
+            case "UP_RIGHT":
+                b.setY(b.getY()-8);
+                b.setX(b.getX()+15);
+                break;
+            case "DOWN_LEFT":
+                b.setY(b.getY()-8);
+                b.setX(b.getX()-32);
+                break;
+            case "DOWN_RIGHT":
+                b.setY(b.getY()+8);
+                b.setX(b.getX()-35);
+                break;
+        }
+
+        b.setX(b.getX()+16);
         this.balas.add(b);
         this.directionJ1 = b.getDireccion();
     }
