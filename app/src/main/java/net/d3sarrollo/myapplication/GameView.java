@@ -80,6 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         return contadorZombiesEliminados;
     }
 
+
     public void setContadorZombiesEliminados(int contadorZombiesEliminados) {
         this.contadorZombiesEliminados = contadorZombiesEliminados;
     }
@@ -121,32 +122,34 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         niveles.add(nivelN);
     }
 
-    private void generarNivel (){
-
-        if (contadorNivel <= niveles.size()){
-            Nivel n = niveles.get(contadorNivel);
-
-            int cantZombies = n.getCantidadZombies();
-            int velZombie = n.getVelocidadZombies();
-            int cantBloques = n.getCantidadBloques();
-
-            for (int i = 0; i < cantZombies; i++) {
-                Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, velZombie);
-                zombies.add(z);
-            }
-
-            bloques.clear();
-            for (int i = 0; i < cantBloques; i++) {
-                Bloque b = new Bloque(anchoPantalla,altoPantalla, 25, player1.getCoorX(), player1.getCoorY());
-                bloques.add(b);
-            }
-
-            this.contadorNivel = this.contadorNivel + 1;
+    protected void generarZombies(){
+        Nivel n1 = this.niveles.get(contadorNivel);
+        int cantZombies = n1.getCantidadZombies();
+        int velZombie = n1.getVelocidadZombies();
+        zombies.clear();
+        for (int i = 0; i < cantZombies; i++) {
+            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, velZombie);
+            zombies.add(z);
         }
     }
 
+    protected void generarBloques(){
+        Nivel n = niveles.get(contadorNivel);
+        int cantBloques = n.getCantidadBloques();
+        bloques.clear();
+        for (int i = 0; i < cantBloques; i++) {
+            Bloque b = new Bloque(anchoPantalla,altoPantalla, 25, player1.getCoorX(), player1.getCoorY());
+            bloques.add(b);
+        }
+    }
 
-
+    protected void generarNivel(){
+        if (contadorNivel <= niveles.size()){
+            this.generarZombies();
+            this.generarBloques();
+            this.contadorNivel = this.contadorNivel + 1;
+        }
+    }
 
 
     public GameView(Context context) {

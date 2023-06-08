@@ -19,12 +19,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
@@ -47,6 +53,10 @@ import com.google.android.gms.nearby.connection.ConnectionsClient;
 import android.Manifest;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,6 +77,22 @@ public class MainActivity extends AppCompatActivity {
     private Timer gameTimer;
     private boolean isToastShown = false;
     private TextView textoNivel, textoPuntos;
+
+    private InterstitialAd mInterstitialAd;
+
+    public int getNivelActual() {
+        return nivelActual;
+    }
+
+    public void setNivelActual(int nivelActual) {
+        this.nivelActual = nivelActual;
+    }
+
+    private int nivelActual = 1;
+
+
+
+
 
 
     @Override
@@ -113,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +149,63 @@ public class MainActivity extends AppCompatActivity {
         requestPermissionsIfNeeded();
 
         setContentView(R.layout.activity_main);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i(TAG, "onAdLoaded");
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdClicked() {
+                                // Called when a click is recorded for an ad.
+                                Log.d(TAG, "Ad was clicked.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Set the ad reference to null so you don't show the ad a second time.
+                                Log.d(TAG, "Ad dismissed fullscreen content.");
+                                mInterstitialAd = null;
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                Log.e(TAG, "Ad failed to show fullscreen content.");
+                                mInterstitialAd = null;
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                // Called when an impression is recorded for an ad.
+                                Log.d(TAG, "Ad recorded an impression.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                Log.d(TAG, "Ad showed fullscreen content.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.d(TAG, loadAdError.toString());
+                        mInterstitialAd = null;
+                    }
+                });
+
+
+
 
         // Crear una instancia del lienzo personalizado
         gameView = new GameView(this);
@@ -252,24 +338,35 @@ public class MainActivity extends AppCompatActivity {
 
         // Actualizar el lienzo personalizado cada 16ms (60fps)
         gameTimer = new Timer();
+
         gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(() -> {
                     if (gameView.isFinDelJuego() && !isToastShown) {
                         finish();
-                        Toast.makeText(getApplicationContext(), "Fin del Juego", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Game Over", Toast.LENGTH_LONG).show();
                         isToastShown = true;
                         gameTimer.cancel();
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd.show(MainActivity.this);
+                        } else {
+                            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                        }
                     }
-                    gameView.invalidate();
-                    String textoN = "Nivel: " + gameView.getNivelAcutal();
+
+                    String textoN = "Level: " + gameView.getNivelAcutal();
                     textoNivel.setText(textoN);
-                    String textoP = "Puntos: " + gameView.getContadorZombiesEliminados();
+                    String textoP = "Score: " + gameView.getContadorZombiesEliminados();
                     textoPuntos.setText(textoP);
+                    gameView.invalidate();
+
                 });
             }
         }, 0, 16);
+
+
+
     }
 
     private void sendGameData(String endpointId, byte[] playerData, byte[] balasArray, byte[] zombiesArray) {

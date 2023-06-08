@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925537668557",
+    "project_id": "zombiedefense-randommaps",
+    "storage_bucket": "zombiedefense-randommaps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925537668557:android:9bafbc086a23aaee998884",
+        "android_client_info": {
+          "package_name": "net.d3sarrollo.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925537668557-6np7r9s87od47h9c48pd9053mfetqv91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpSN2bCu3lmuuYlTm5AcvMe3JePJmgExM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925537668557-6np7r9s87od47h9c48pd9053mfetqv91.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
