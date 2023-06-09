@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.WindowManager;
 
 
+import androidx.core.content.ContextCompat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,6 +90,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     public int getNivelAcutal() {
         return this.contadorNivel;
     }
+    private Context context;
 
 
 
@@ -95,30 +98,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private void generarNiveles(){
         niveles = new ArrayList<>();
-        Nivel nivelN = new Nivel( 20,2,25);
+        Nivel nivelN = new Nivel( 10,2,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 30,2,10);
+        nivelN = new Nivel( 20,2,20);
+        niveles.add(nivelN);
+        nivelN = new Nivel( 30,2,15);
         niveles.add(nivelN);
         nivelN = new Nivel( 40,2,10);
         niveles.add(nivelN);
-        nivelN = new Nivel( 40,3,8);
+        nivelN = new Nivel( 50,2,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 50,3,7);
+        nivelN = new Nivel( 10,3,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 60,3,6);
+        nivelN = new Nivel( 20,3,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 70,4,5);
+        nivelN = new Nivel( 30,3,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 80,4,4);
+        nivelN = new Nivel( 40,3,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 90,4,3);
+        nivelN = new Nivel( 50,3,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 100,5,2);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 150,6,1);
+        nivelN = new Nivel( 60,3,5);
         niveles.add(nivelN);
         //nivel 12
-        nivelN = new Nivel( 200,7,0);
+        nivelN = new Nivel( 70,5,5);
         niveles.add(nivelN);
     }
 
@@ -154,6 +157,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     public GameView(Context context) {
         super(context);
+        this.context = context;
         paint = new Paint();
         generarNiveles();
 
@@ -383,7 +387,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
                     //Dibujar balas
                     if (balas.size()>0){
-                        paint.setColor(Color.BLUE);
+                        int colorBala = ContextCompat.getColor(this.context, R.color.green);
+
+                        paint.setColor(colorBala);
                         for (int i = 0; i < balas.size(); i++) {
                             Bala bala = balas.get(i);
                             // Realiza las operaciones necesarias con la bala en la posición i

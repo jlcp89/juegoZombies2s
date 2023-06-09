@@ -8,24 +8,84 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <Button
-        android:id="@+id/button_jugar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jugar"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
-    <Button
-        android:id="@+id/button_salir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salir"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/button_jugar"
-        android:textColor="@color/white"
-        />
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            android:layout_marginTop="20dp">
+        </com.google.android.gms.ads.AdView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="50dp">
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@mipmap/ic_launcher"/>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zombie Defense: Random Maps"
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            android:textSize="20sp"
+            android:textColor="@color/green"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/button_jugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            />
+
+        <Button
+            android:id="@+id/button_salir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/button_jugar"
+            android:textColor="@color/white"
+            />
+    </LinearLayout>
+
+
+
+
 
 
 </LinearLayout>
