@@ -57,8 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-
-
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int nivelActual = 1;
 
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
 
@@ -154,7 +153,10 @@ public class MainActivity extends AppCompatActivity {
 
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        InterstitialAd.load(this,"\n" +
+                        "ca-app-pub-7114592307899156/9792608152", adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
