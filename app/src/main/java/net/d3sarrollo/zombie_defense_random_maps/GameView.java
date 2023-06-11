@@ -18,7 +18,6 @@ import android.view.WindowManager;
 
 import androidx.core.content.ContextCompat;
 
-import net.d3sarrollo.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,13 +48,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
 
 
-    int prevX, prevY;
-    int joystickX = 0;
-    int joystickY = 0;
+    private int prevX, prevY;
+    private int joystickX = 0;
+    private int joystickY = 0;
 
-    float joystickAngle = 0;
+    private float joystickAngle = 0;
 
-    int sizeJoystick = 150;
+    private int sizeJoystick = 150;
 
     protected byte[] getBalasByte (){
         return this.balas.toString().getBytes();
@@ -93,6 +92,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         return this.contadorNivel;
     }
     private Context context;
+    private int contadorZombiesNivel = 0;
 
 
 
@@ -100,30 +100,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private void generarNiveles(){
         niveles = new ArrayList<>();
-        Nivel nivelN = new Nivel( 65,3,15);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 15,2,22);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 20,2,19);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 25,2,16);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 30,2,13);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 35,2,10);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 40,2,7);
-        niveles.add(nivelN);
-        nivelN = new Nivel(45 ,2,6);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 50,2,5);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 55,3,4);
-        niveles.add(nivelN);
-        nivelN = new Nivel( 60,3,3);
-        niveles.add(nivelN);
-        //nivel 12
-        nivelN = new Nivel( 65,3,2);
+        Nivel nivelN = new Nivel( 25,2,15);
         niveles.add(nivelN);
     }
 
@@ -208,6 +185,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             }
         });
         gameThread.start();
+
+
     }
 
     @Override
@@ -500,6 +479,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     j--;
                     contadorZombiesEliminados += 1;
 
+                    if (contadorZombiesEliminados<=200){
+                        Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+                        zombies.add(z);
+                    } else if ((contadorZombiesEliminados > 200) && (contadorZombiesEliminados <= 500)){
+                        Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+                        zombies.add(z);
+                        z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+                        zombies.add(z);
+                    } else if (contadorZombiesEliminados > 500){
+                        Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+                        zombies.add(z);
+                        z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+                        zombies.add(z);
+                        z = new Zombie(anchoPantalla,altoPantalla, 25, 3);
+                        zombies.add(z);
+                    }
                     // Salir del bucle interno para evitar verificar más colisiones con la misma bala
                     break;
                 }
@@ -556,7 +551,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         int difY = 0;
         int pointerCount = event.getPointerCount();
 
-        if (touchX < anchoPantalla/2){
+        if (touchX < anchoPantalla){
             //Manejar eventos de toque de pantalla
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:

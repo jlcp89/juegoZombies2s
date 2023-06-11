@@ -1,6 +1,8 @@
 package net.d3sarrollo.zombie_defense_random_maps;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +26,6 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import net.d3sarrollo.myapplication.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int nivelActual = 1;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
 
 
@@ -116,9 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getSharedPreferences("max_score", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         @SuppressLint("VisibleForTests") AdRequest adRequest = new AdRequest.Builder().build();
 
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        //"ca-app-pub-7114592307899156/9792608152"
+        //"ca-app-pub-3940256099942544/1033173712"
 
         InterstitialAd.load(this,"\n" +
                         "ca-app-pub-7114592307899156/9792608152", adRequest,
@@ -243,7 +252,12 @@ public class MainActivity extends AppCompatActivity {
         botonDispararArriba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP"); // Coordenadas de la bala
+
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                 nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -251,7 +265,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararAbajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -259,7 +277,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararDerecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "RIGHT"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "RIGHT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -267,7 +289,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararIzquierda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "LEFT"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "LEFT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -275,7 +301,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararArribaI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_LEFT"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_LEFT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -283,7 +313,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararArribaD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_RIGHT"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "UP_RIGHT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -291,7 +325,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararAbajoI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_LEFT"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "LEFT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_LEFT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -299,7 +337,11 @@ public class MainActivity extends AppCompatActivity {
         botonDispararAbajoD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_RIGHT"); // Coordenadas de la bala
+                Bala nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "RIGHT"); // Coordenadas de la bala
+                gameView.agregarBala(nuevaBala);
+                nuevaBala = new Bala(gameView.regresarCoordenadasJugador1()[0],gameView.regresarCoordenadasJugador1()[1], "DOWN_RIGHT"); // Coordenadas de la bala
                 gameView.agregarBala(nuevaBala);
             }
         });
@@ -313,6 +355,15 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> {
                     if (gameView.isFinDelJuego() && !isToastShown) {
+
+                        int eliminadosPartida = gameView.getContadorZombiesEliminados();
+                        int valorRecuperado = sharedPreferences.getInt("max_score", 0);
+
+                        if (eliminadosPartida > valorRecuperado){
+                            editor.putInt("max_score", eliminadosPartida);
+                            editor.apply();  // O puedes usar editor.commit();
+                        }
+
                         finish();
                         Toast.makeText(getApplicationContext(), "Game Over", Toast.LENGTH_LONG).show();
                         isToastShown = true;
@@ -324,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    String textoN = "Level: " + gameView.getNivelAcutal();
+                    String textoN = "Max. Score: " + sharedPreferences.getInt("max_score", 0);
                     textoNivel.setText(textoN);
                     String textoP = "Score: " + gameView.getContadorZombiesEliminados();
                     textoPuntos.setText(textoP);
@@ -332,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
 
                 });
             }
-        }, 0, 16);
+        }, 0, 160);
 
 
 

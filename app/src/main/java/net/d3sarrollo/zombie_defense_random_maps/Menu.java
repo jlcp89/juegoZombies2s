@@ -10,7 +10,6 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
-import net.d3sarrollo.myapplication.R;
 
 public class Menu extends AppCompatActivity {
 
@@ -40,10 +39,5 @@ public class Menu extends AppCompatActivity {
             }
         });
 
-        AdView adView = new AdView(this);
-
-        adView.setAdSize(AdSize.BANNER);
-
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
     }
 }

@@ -101,16 +101,17 @@ public class Zombie {
     }
 
     public boolean isHitBy(Bala bala) {
-        // Calcular la distancia entre el centro del zombie y la posición de la bala
-        double distance = Math.sqrt(Math.pow(bala.getX() - (x + size/2), 2) + Math.pow(bala.getY() - (y + size/2), 2));
-
-        // Verificar si la distancia es menor o igual al radio del círculo del zombie
-        return distance <= size;
+        if (bala != null){
+            // Calcular la distancia entre el centro del zombie y la posición de la bala
+            double distance = Math.sqrt(Math.pow(bala.getX() - (this.x + this.size/2), 2) + Math.pow(bala.getY() - (this.y + this.size/2), 2));
+            return distance <= this.size;
+        } else {
+            return false;
+        }
     }
 
-
     public double getDistanceToPlayer() {
-        return distanceToPlayer;
+        return this.distanceToPlayer;
     }
 
     public void setDistanceToPlayer(double distanceToPlayer) {
