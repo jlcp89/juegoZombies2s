@@ -93,6 +93,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
     private Context context;
     private int contadorZombiesNivel = 0;
+    private boolean rapido = false;
 
 
 
@@ -100,7 +101,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private void generarNiveles(){
         niveles = new ArrayList<>();
-        Nivel nivelN = new Nivel( 25,2,15);
+        Nivel nivelN = new Nivel( 30,2,15);
         niveles.add(nivelN);
     }
 
@@ -328,6 +329,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     for (int i = 0; i < zombies.size(); i++) {
                         Zombie z = zombies.get(i);
 
+                        if (z.getDireccion() == null){
+                            z.setDireccion("UP");
+                        }
+
                         switch (z.getDireccion()) {
                             case "UP":
                                 zombieArribaDrawable = getResources().getDrawable(R.drawable.zombie_arriba);
@@ -479,23 +484,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     j--;
                     contadorZombiesEliminados += 1;
 
-                    if (contadorZombiesEliminados<=200){
+                    if (contadorZombiesEliminados<=250){
                         Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
                         zombies.add(z);
-                    } else if ((contadorZombiesEliminados > 200) && (contadorZombiesEliminados <= 500)){
-                        Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
-                        zombies.add(z);
-                        z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
-                        zombies.add(z);
-                    } else if (contadorZombiesEliminados > 500){
-                        Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
-                        zombies.add(z);
-                        z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
-                        zombies.add(z);
-                        z = new Zombie(anchoPantalla,altoPantalla, 25, 3);
-                        zombies.add(z);
+                    } else if (contadorZombiesEliminados > 250 && contadorZombiesEliminados<500){
+                        if (rapido){
+                            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 4);
+                            zombies.add(z);
+                            rapido = false;
+                        } else {
+                            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 2);
+                            zombies.add(z);
+                            rapido = true;
+                        }
+                    } else if (contadorZombiesEliminados >= 500){
+                        if (rapido){
+                            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 6);
+                            zombies.add(z);
+                            rapido = false;
+                        } else {
+                            Zombie z = new Zombie(anchoPantalla,altoPantalla, 25, 3);
+                            zombies.add(z);
+                            rapido = true;
+                        }
                     }
-                    // Salir del bucle interno para evitar verificar más colisiones con la misma bala
                     break;
                 }
             }
@@ -503,6 +515,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
              //Calcular distancia del toque desde el centro del joystick
             int difX = deltaX + mX;
             int difY = deltaY + mY;
+
             String directionZ = "UP";
 
             if (Math.abs(difX) > Math.abs(difY)) {

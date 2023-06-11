@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
 
                 });
             }
-        }, 0, 160);
+        }, 0, 40);
 
 
 
