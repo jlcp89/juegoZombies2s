@@ -48,7 +48,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zombie Defense: Random Maps"
+            android:text="@string/zombie_defense_random_maps"
             android:gravity="center"
             android:layout_marginTop="50dp"
             android:textSize="20sp"

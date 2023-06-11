@@ -1,44 +1,33 @@
 package net.d3sarrollo.zombie_defense_random_maps;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.content.pm.PackageManager;
+import android.annotation.SuppressLint;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.ConnectionsClient;
-
-import android.Manifest;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.ConnectionsClient;
+import com.google.android.gms.nearby.connection.Payload;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import net.d3sarrollo.myapplication.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,15 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private int playerX, playerY, playerSize;
     private GameView gameView;
     public static double screenWidth;
-    private FloatingActionButton botonBuscar, botonDispararArriba, botonDispararAbajo, botonDispararIzquierda, botonDispararDerecha, botonDispararArribaI, botonDispararArribaD, botonDispararAbajoI, botonDispararAbajoD;
+    private FloatingActionButton botonBuscar;
     private static final String TAG = "MainActivity";
     private ConnectionsClient connectionsClient;
-    private MyEndpointDiscoveryCallback endpointDiscoveryCallback;
-    private MyConnectionLifecycleCallback connectionLifecycleCallback;
     private static final int PERMISSION_REQUEST_CODE = 123;
     String selectedEndpointId;
     private boolean servidor = false;
-    private boolean finJuego = false;
     private Timer gameTimer;
     private boolean isToastShown = false;
     private TextView textoNivel, textoPuntos;
@@ -71,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int nivelActual = 1;
-
-    private FirebaseAnalytics mFirebaseAnalytics;
 
 
 
@@ -132,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
+        @SuppressLint("VisibleForTests") AdRequest adRequest = new AdRequest.Builder().build();
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         InterstitialAd.load(this,"\n" +
                         "ca-app-pub-7114592307899156/9792608152", adRequest,
@@ -161,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                                 // Called when ad fails to show.
                                 Log.e(TAG, "Ad failed to show fullscreen content.");
                                 mInterstitialAd = null;
@@ -196,10 +180,10 @@ public class MainActivity extends AppCompatActivity {
         gameView = new GameView(this);
 
         // Crear una instancia de tu ConnectionLifecycleCallback
-        connectionLifecycleCallback = new MyConnectionLifecycleCallback();
+        MyConnectionLifecycleCallback connectionLifecycleCallback = new MyConnectionLifecycleCallback();
 
         // Crear una instancia de tu MyEndpointDiscoveryCallback
-        endpointDiscoveryCallback = new MyEndpointDiscoveryCallback();
+        MyEndpointDiscoveryCallback endpointDiscoveryCallback = new MyEndpointDiscoveryCallback();
 
         // Obtener una instancia de ConnectionsClient
         connectionsClient = Nearby.getConnectionsClient(this);
@@ -208,14 +192,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Agregar el lienzo personalizado al layout de la actividad principal
         LinearLayout layout = findViewById(R.id.game_layout);
-        botonDispararArriba = findViewById(R.id.btn_up);
-        botonDispararAbajo = findViewById(R.id.btn_down);
-        botonDispararDerecha = findViewById(R.id.btn_right);
-        botonDispararIzquierda = findViewById(R.id.btn_left);
-        botonDispararArribaI = findViewById(R.id.btn_ari);
-        botonDispararArribaD = findViewById(R.id.btn_ard);
-        botonDispararAbajoI = findViewById(R.id.btn_abi);
-        botonDispararAbajoD = findViewById(R.id.btn_abd);
+        FloatingActionButton botonDispararArriba = findViewById(R.id.btn_up);
+        FloatingActionButton botonDispararAbajo = findViewById(R.id.btn_down);
+        FloatingActionButton botonDispararDerecha = findViewById(R.id.btn_right);
+        FloatingActionButton botonDispararIzquierda = findViewById(R.id.btn_left);
+        FloatingActionButton botonDispararArribaI = findViewById(R.id.btn_ari);
+        FloatingActionButton botonDispararArribaD = findViewById(R.id.btn_ard);
+        FloatingActionButton botonDispararAbajoI = findViewById(R.id.btn_abi);
+        FloatingActionButton botonDispararAbajoD = findViewById(R.id.btn_abd);
         textoNivel = findViewById(R.id.textNivel);
         textoPuntos = findViewById(R.id.textPuntos);
 

@@ -100,30 +100,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private void generarNiveles(){
         niveles = new ArrayList<>();
-        Nivel nivelN = new Nivel( 10,2,25);
+        Nivel nivelN = new Nivel( 65,3,15);
         niveles.add(nivelN);
-        nivelN = new Nivel( 20,2,20);
+        nivelN = new Nivel( 15,2,22);
         niveles.add(nivelN);
-        nivelN = new Nivel( 30,3,20);
+        nivelN = new Nivel( 20,2,19);
         niveles.add(nivelN);
-        nivelN = new Nivel( 40,3,20);
+        nivelN = new Nivel( 25,2,16);
         niveles.add(nivelN);
-        nivelN = new Nivel( 50,3,20);
+        nivelN = new Nivel( 30,2,13);
         niveles.add(nivelN);
-        nivelN = new Nivel( 60,4,20);
+        nivelN = new Nivel( 35,2,10);
         niveles.add(nivelN);
-        nivelN = new Nivel( 70,4,20);
+        nivelN = new Nivel( 40,2,7);
         niveles.add(nivelN);
-        nivelN = new Nivel( 80,4,20);
+        nivelN = new Nivel(45 ,2,6);
         niveles.add(nivelN);
-        nivelN = new Nivel( 90,5,20);
+        nivelN = new Nivel( 50,2,5);
         niveles.add(nivelN);
-        nivelN = new Nivel( 100,5,20);
+        nivelN = new Nivel( 55,3,4);
         niveles.add(nivelN);
-        nivelN = new Nivel( 110,5,20);
+        nivelN = new Nivel( 60,3,3);
         niveles.add(nivelN);
         //nivel 12
-        nivelN = new Nivel( 120,5,20);
+        nivelN = new Nivel( 65,3,2);
         niveles.add(nivelN);
     }
 
@@ -230,6 +230,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void draw() {
         Canvas canvas = null;
         try {
@@ -284,7 +285,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
                     //Dibujar jugador
                     // Obtener el drawable "soldado_arriba" desde los recursos
-                    Drawable soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_arriba);
+                    @SuppressLint("UseCompatLoadingForDrawables") Drawable soldadoArribaDrawable = getResources().getDrawable(R.drawable.soldado_arriba);
 
                     switch (directionJ1) {
                         case "UP":
@@ -555,7 +556,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         int difY = 0;
         int pointerCount = event.getPointerCount();
 
-        if (touchX < anchoPantalla){
+        if (touchX < anchoPantalla/2){
             //Manejar eventos de toque de pantalla
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
