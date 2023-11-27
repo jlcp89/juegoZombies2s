@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.d3sarrollo.zombie_defense_random_maps.Menu"
+    tools:context="net.d3sarrollo.zombie_defense_random_maps.ui.activity.Menu"
     android:orientation="vertical"
     android:gravity="center">
 

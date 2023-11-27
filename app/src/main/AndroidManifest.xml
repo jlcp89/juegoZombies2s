@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name="net.d3sarrollo.zombie_defense_random_maps.Menu"
+            android:name="net.d3sarrollo.zombie_defense_random_maps.ui.activity.Menu"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -32,7 +32,7 @@
 
 
         <activity
-            android:name="net.d3sarrollo.zombie_defense_random_maps.MainActivity"
+            android:name="net.d3sarrollo.zombie_defense_random_maps.ui.activity.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
 
